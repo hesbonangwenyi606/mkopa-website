@@ -15,6 +15,8 @@ const SpecItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
 );
 
 export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply }) => {
+  const { specs = {}, ...rest } = phone;
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image Section */}
@@ -23,6 +25,7 @@ export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply 
           src={phone.image}
           alt={`${phone.brand} ${phone.name}`}
           className="w-full h-64 sm:h-48 md:h-64 object-cover"
+          loading="lazy"
         />
         {phone.available && (
           <span className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold animate-pulse">
@@ -36,13 +39,14 @@ export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply 
         <h3 className="text-xl font-bold text-gray-900 mb-2">{phone.name}</h3>
         <p className="text-sm text-gray-500 mb-4">{phone.brand}</p>
 
-        {/* Specs */}
-        <div className="space-y-2 mb-4">
-          <SpecItem label="Screen" value={phone.specs?.screen || 'N/A'} />
-          <SpecItem label="Camera" value={phone.specs?.camera || 'N/A'} />
-          <SpecItem label="Battery" value={phone.specs?.battery || 'N/A'} />
-          <SpecItem label="Storage" value={phone.specs?.storage || 'N/A'} />
-        </div>
+        {/* Dynamic Specs */}
+        {Object.keys(specs).length > 0 && (
+          <div className="space-y-2 mb-4">
+            {Object.entries(specs).map(([label, value]) => (
+              <SpecItem key={label} label={label} value={value as string} />
+            ))}
+          </div>
+        )}
 
         {/* Pricing & Action */}
         <div className="border-t pt-4">
