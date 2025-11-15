@@ -13,6 +13,9 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
   const [showConfetti, setShowConfetti] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
+  const confettiColors = ['#F43F5E', '#FACC15', '#22D3EE', '#10B981', '#3B82F6', '#8B5CF6'];
+  const confettiCount = 50;
+
   // Close modal on outside click
   const handleOutsideClick = (e: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
@@ -28,7 +31,6 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
     } else {
       document.removeEventListener('mousedown', handleOutsideClick);
     }
-
     return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, [isOpen]);
 
@@ -46,10 +48,6 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
       setFormData({ name: '', phone: '', idNumber: '', location: '' });
     }, 3000);
   };
-
-  // Random confetti colors and sizes
-  const confettiColors = ['#F43F5E', '#FACC15', '#22D3EE', '#10B981', '#3B82F6', '#8B5CF6'];
-  const confettiCount = 50;
 
   return (
     <div
@@ -75,6 +73,15 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
 
         {!submitted ? (
           <>
+            {/* Phone Image with zoom & shadow */}
+            {phone && (
+              <img
+                src={phone.image}
+                alt={phone.name}
+                className="w-32 h-32 object-cover rounded-xl mx-auto mb-4 transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-green-300/50"
+              />
+            )}
+
             <h2 className="text-2xl font-bold text-gray-900 mb-2">Apply for {phone.name}</h2>
             <p className="text-gray-600 mb-6">Weekly Payment: KSh {phone.weeklyPayment}</p>
 
@@ -123,25 +130,22 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
           // Success overlay with colorful confetti
           <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay overflow-hidden">
             {/* Confetti */}
-            {showConfetti && (
-              <>
-                {Array.from({ length: confettiCount }).map((_, i) => (
-                  <span
-                    key={i}
-                    className="absolute w-2 h-2 rounded-full animate-confetti"
-                    style={{
-                      backgroundColor: confettiColors[Math.floor(Math.random() * confettiColors.length)],
-                      left: `${Math.random() * 100}%`,
-                      top: '-10%',
-                      width: `${4 + Math.random() * 4}px`,
-                      height: `${4 + Math.random() * 4}px`,
-                      animationDuration: `${1 + Math.random() * 1.5}s`,
-                      transform: `rotate(${Math.random() * 360}deg)`,
-                    }}
-                  />
-                ))}
-              </>
-            )}
+            {showConfetti &&
+              Array.from({ length: confettiCount }).map((_, i) => (
+                <span
+                  key={i}
+                  className="absolute w-2 h-2 rounded-full animate-confetti"
+                  style={{
+                    backgroundColor: confettiColors[Math.floor(Math.random() * confettiColors.length)],
+                    left: `${Math.random() * 100}%`,
+                    top: '-10%',
+                    width: `${4 + Math.random() * 4}px`,
+                    height: `${4 + Math.random() * 4}px`,
+                    animationDuration: `${1 + Math.random() * 1.5}s`,
+                    transform: `rotate(${Math.random() * 360}deg)`,
+                  }}
+                />
+              ))}
 
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 scale-90 opacity-0">
               <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
