@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Phone } from '../data/phones';
 
 interface PhoneCardProps {
@@ -6,7 +6,6 @@ interface PhoneCardProps {
   onApply: (phone: Phone) => void;
 }
 
-// Reusable spec item component
 const SpecItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex justify-between text-sm">
     <span className="text-gray-600">{label}:</span>
@@ -15,14 +14,17 @@ const SpecItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
 );
 
 export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply }) => {
-  const { specs = {}, ...rest } = phone;
+  const { specs = {} } = phone;
+  const [expanded, setExpanded] = useState(false);
+
+  const specEntries = Object.entries(specs);
 
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-2">
       {/* Image Section */}
       <div className="relative">
         <img
-          src={phone.image}
+          src={}
           alt={`${phone.brand} ${phone.name}`}
           className="w-full h-64 sm:h-48 md:h-64 object-cover"
           loading="lazy"
@@ -39,12 +41,20 @@ export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply 
         <h3 className="text-xl font-bold text-gray-900 mb-2">{phone.name}</h3>
         <p className="text-sm text-gray-500 mb-4">{phone.brand}</p>
 
-        {/* Dynamic Specs */}
-        {Object.keys(specs).length > 0 && (
+        {/* Specs with Read More */}
+        {specEntries.length > 0 && (
           <div className="space-y-2 mb-4">
-            {Object.entries(specs).map(([label, value]) => (
+            {specEntries.slice(0, expanded ? specEntries.length : 2).map(([label, value]) => (
               <SpecItem key={label} label={label} value={value as string} />
             ))}
+            {specEntries.length > 2 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="text-sm text-blue-600 font-semibold hover:underline"
+              >
+                {expanded ? 'Show Less' : 'Read More'}
+              </button>
+            )}
           </div>
         )}
 
