@@ -18,6 +18,10 @@ export const HeroSection: React.FC = () => {
     document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollDown = () => {
+    window.scrollBy({ top: window.innerHeight * 0.9, behavior: 'smooth' });
+  };
+
   return (
     <section id="home" className="relative h-screen overflow-hidden text-white">
       {/* Parallax & Floating Background */}
@@ -58,6 +62,22 @@ export const HeroSection: React.FC = () => {
         </div>
       </div>
 
+      {/* Scroll Indicator */}
+      <div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+        onClick={scrollDown}
+      >
+        <svg
+          className="w-8 h-8 text-white animate-bounce"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </div>
+
       {/* Fade-in & Float Animations */}
       <style>
         {`
@@ -81,6 +101,15 @@ export const HeroSection: React.FC = () => {
             0% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
+          }
+
+          .animate-bounce {
+            animation: bounceY 1.5s infinite;
+          }
+
+          @keyframes bounceY {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15%); }
           }
         `}
       </style>
