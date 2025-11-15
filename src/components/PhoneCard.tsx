@@ -6,6 +6,7 @@ interface PhoneCardProps {
   onApply: (phone: Phone) => void;
 }
 
+// Reusable spec item component
 const SpecItem: React.FC<{ label: string; value: string }> = ({ label, value }) => (
   <div className="flex justify-between text-sm">
     <span className="text-gray-600">{label}:</span>
@@ -14,8 +15,8 @@ const SpecItem: React.FC<{ label: string; value: string }> = ({ label, value }) 
 );
 
 export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply }) => {
-  const { specs = {} } = phone;
   const [expanded, setExpanded] = useState(false);
+  const { specs = {} } = phone;
 
   const specEntries = Object.entries(specs);
 
@@ -24,7 +25,11 @@ export const PhoneCard: React.FC<PhoneCardProps> = React.memo(({ phone, onApply 
       {/* Image Section */}
       <div className="relative">
         <img
-          src={}
+          src={
+            phone.name === 'Samsung A14'
+              ? 'https://i.pinimg.com/1200x/eb/d7/d4/ebd7d41071f941578aaff6863e0ab27f.jpg'
+              : phone.image
+          }
           alt={`${phone.brand} ${phone.name}`}
           className="w-full h-64 sm:h-48 md:h-64 object-cover"
           loading="lazy"
