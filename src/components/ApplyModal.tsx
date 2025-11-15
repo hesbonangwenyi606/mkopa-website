@@ -19,8 +19,10 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
     }
   };
 
+  // Scroll modal into view when it opens
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && modalRef.current) {
+      modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
       document.addEventListener('mousedown', handleOutsideClick);
     } else {
       document.removeEventListener('mousedown', handleOutsideClick);
