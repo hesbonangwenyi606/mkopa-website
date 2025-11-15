@@ -86,10 +86,10 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-lg font-semibold mb-4">Contact</h4>
             <ul className="space-y-2 text-gray-400">
-              <li>Tel: +254(0)794 170 324</li>
+              <li>Tel: +254(0)700 000 2394</li>
               <li>Email: <a href="mailto:wesily@example.com" className="hover:underline hover:text-green-400 transition-all duration-300">wesily@example.com</a></li>
               <li>Location: Nairobi, Kenya</li>
-              <li>Hours: Mon-Sat, 8AM-6PM</li>
+              <li>Hours: Mon-Fri, 8AM-6PM</li>
             </ul>
           </div>
         </div>
