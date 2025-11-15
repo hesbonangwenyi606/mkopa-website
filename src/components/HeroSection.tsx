@@ -20,12 +20,10 @@ export const HeroSection: React.FC = () => {
 
   return (
     <section id="home" className="relative h-screen overflow-hidden text-white">
-      {/* Parallax Background */}
+      {/* Parallax & Floating Background */}
       <div
-        className="absolute inset-0"
-        style={{
-          transform: `translateY(${offsetY * 0.3}px)`,
-        }}
+        className="absolute inset-0 animate-float-slow"
+        style={{ transform: `translateY(${offsetY * 0.3}px)` }}
       >
         <img
           src="https://d64gsuwffb70l.cloudfront.net/690321995c848010f5a202d4_1761812937519_84aefd55.webp"
@@ -47,20 +45,20 @@ export const HeroSection: React.FC = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center opacity-0 animate-fade-in-up delay-500">
           <button
             onClick={scrollToPhones}
-            className="bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all"
+            className="bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all animate-float-slow"
           >
             Browse Phones
           </button>
           <button
             onClick={scrollToServices}
-            className="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="bg-white hover:bg-gray-100 text-blue-900 px-8 py-4 rounded-lg text-lg font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 animate-float-slow"
           >
             Our Services
           </button>
         </div>
       </div>
 
-      {/* Fade-in Animation Styles */}
+      {/* Fade-in & Float Animations */}
       <style>
         {`
           .animate-fade-in-up {
@@ -73,6 +71,16 @@ export const HeroSection: React.FC = () => {
           @keyframes fadeInUp {
             0% { opacity: 0; transform: translateY(20px); }
             100% { opacity: 1; transform: translateY(0); }
+          }
+
+          .animate-float-slow {
+            animation: floatY 6s ease-in-out infinite alternate;
+          }
+
+          @keyframes floatY {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0); }
           }
         `}
       </style>
