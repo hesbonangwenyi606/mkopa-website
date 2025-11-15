@@ -10,6 +10,7 @@ interface ApplyModalProps {
 export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }) => {
   const [formData, setFormData] = useState({ name: '', phone: '', idNumber: '', location: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Close modal on outside click
@@ -36,8 +37,11 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
+    setShowConfetti(true);
+
     setTimeout(() => {
       setSubmitted(false);
+      setShowConfetti(false);
       onClose();
       setFormData({ name: '', phone: '', idNumber: '', location: '' });
     }, 3000);
@@ -112,8 +116,25 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             </form>
           </>
         ) : (
-          // Success overlay
+          // Success overlay with confetti
           <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay">
+            {/* Confetti */}
+            {showConfetti && (
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {[...Array(30)].map((_, i) => (
+                  <span
+                    key={i}
+                    className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-confetti"
+                    style={{
+                      left: `${Math.random() * 100}%`,
+                      top: '-10%',
+                      animationDelay: `${Math.random() * 0.5}s`,
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 scale-90 opacity-0">
               <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                 <path
@@ -137,6 +158,14 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             @keyframes successOverlay {
               0% { opacity: 0; transform: scale(0.9); }
               100% { opacity: 1; transform: scale(1); }
+            }
+
+            .animate-confetti {
+              animation: confetti 1.5s forwards ease-out;
+            }
+            @keyframes confetti {
+              0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(150px) rotate(360deg); opacity: 0; }
             }
           `}
         </style>
