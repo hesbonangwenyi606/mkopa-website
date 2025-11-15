@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Phone } from '../data/phones';
+// src/components/ApplyModal.tsx
+import React, { useState, useEffect, useRef } from "react";
+import { Phone } from "../data/phones";
 
 interface ApplyModalProps {
   phone: Phone | null;
@@ -8,12 +9,17 @@ interface ApplyModalProps {
 }
 
 export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }) => {
-  const [formData, setFormData] = useState({ name: '', phone: '', idNumber: '', location: '' });
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    idNumber: "",
+    location: "",
+  });
   const [submitted, setSubmitted] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const confettiColors = ['#F43F5E', '#FACC15', '#22D3EE', '#10B981', '#3B82F6', '#8B5CF6'];
+  const confettiColors = ["#F43F5E", "#FACC15", "#22D3EE", "#10B981", "#3B82F6", "#8B5CF6"];
   const confettiCount = 50;
 
   // Close modal on outside click
@@ -24,13 +30,12 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
   };
 
   useEffect(() => {
-    if (isOpen && modalRef.current) {
-      modalRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      document.addEventListener('mousedown', handleOutsideClick);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
     } else {
-      document.removeEventListener('mousedown', handleOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     }
-    return () => document.removeEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, [isOpen]);
 
   if (!isOpen || !phone) return null;
@@ -44,21 +49,15 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
       setSubmitted(false);
       setShowConfetti(false);
       onClose();
-      setFormData({ name: '', phone: '', idNumber: '', location: '' });
+      setFormData({ name: "", phone: "", idNumber: "", location: "" });
     }, 3000);
   };
 
   return (
-    <div
-      className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
-        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-      }`}
-    >
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div
         ref={modalRef}
-        className={`bg-white rounded-2xl max-w-md w-full p-8 relative transform transition-all duration-300 ${
-          isOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-        }`}
+        className="bg-white rounded-2xl max-w-md w-full p-8 relative transform transition-all duration-300"
       >
         {/* Close Button */}
         <button
@@ -72,12 +71,12 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
 
         {!submitted ? (
           <>
-            {/* Phone Image with zoom & shadow */}
+            {/* Phone Image */}
             {phone && (
               <img
                 src={phone.image}
                 alt={phone.name}
-                className="w-32 h-32 object-cover rounded-xl mx-auto mb-4 transition-transform duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg hover:shadow-green-300/50"
+                className="w-32 h-32 object-cover rounded-xl mx-auto mb-4 transition-transform duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-green-300/50"
               />
             )}
 
@@ -126,8 +125,7 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             </form>
           </>
         ) : (
-          // Success overlay with colorful confetti
-          <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay overflow-hidden">
+          <div className="text-center py-8 relative">
             {/* Confetti */}
             {showConfetti &&
               Array.from({ length: confettiCount }).map((_, i) => (
@@ -146,7 +144,7 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
                 />
               ))}
 
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 scale-90 opacity-0">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 mx-auto">
               <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
@@ -160,20 +158,12 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
           </div>
         )}
 
-        {/* Animations */}
         <style>
           {`
-            .animate-success-overlay {
-              animation: successOverlay 0.5s forwards;
-            }
-            @keyframes successOverlay {
-              0% { opacity: 0; transform: scale(0.9); }
-              100% { opacity: 1; transform: scale(1); }
-            }
-
             .animate-confetti {
               animation-name: confettiFall;
               animation-timing-function: ease-out;
+              position: absolute;
             }
             @keyframes confettiFall {
               0% { transform: translateY(0) rotate(0deg); opacity: 1; }
