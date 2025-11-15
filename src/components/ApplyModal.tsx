@@ -47,6 +47,10 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
     }, 3000);
   };
 
+  // Random confetti colors and sizes
+  const confettiColors = ['#F43F5E', '#FACC15', '#22D3EE', '#10B981', '#3B82F6', '#8B5CF6'];
+  const confettiCount = 50;
+
   return (
     <div
       className={`fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
@@ -116,23 +120,27 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             </form>
           </>
         ) : (
-          // Success overlay with confetti
-          <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay">
+          // Success overlay with colorful confetti
+          <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay overflow-hidden">
             {/* Confetti */}
             {showConfetti && (
-              <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {[...Array(30)].map((_, i) => (
+              <>
+                {Array.from({ length: confettiCount }).map((_, i) => (
                   <span
                     key={i}
-                    className="absolute w-2 h-2 bg-yellow-400 rounded-full animate-confetti"
+                    className="absolute w-2 h-2 rounded-full animate-confetti"
                     style={{
+                      backgroundColor: confettiColors[Math.floor(Math.random() * confettiColors.length)],
                       left: `${Math.random() * 100}%`,
                       top: '-10%',
-                      animationDelay: `${Math.random() * 0.5}s`,
+                      width: `${4 + Math.random() * 4}px`,
+                      height: `${4 + Math.random() * 4}px`,
+                      animationDuration: `${1 + Math.random() * 1.5}s`,
+                      transform: `rotate(${Math.random() * 360}deg)`,
                     }}
                   />
                 ))}
-              </div>
+              </>
             )}
 
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 scale-90 opacity-0">
@@ -161,9 +169,10 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             }
 
             .animate-confetti {
-              animation: confetti 1.5s forwards ease-out;
+              animation-name: confettiFall;
+              animation-timing-function: ease-out;
             }
-            @keyframes confetti {
+            @keyframes confettiFall {
               0% { transform: translateY(0) rotate(0deg); opacity: 1; }
               100% { transform: translateY(150px) rotate(360deg); opacity: 0; }
             }
