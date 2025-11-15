@@ -112,9 +112,10 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
             </form>
           </>
         ) : (
-          <div className="text-center py-8 animate-success">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+          // Success overlay
+          <div className="absolute inset-0 bg-white bg-opacity-95 flex flex-col items-center justify-center rounded-2xl transition-all duration-500 animate-success-overlay">
+            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-4 scale-90 opacity-0">
+              <svg className="w-10 h-10 text-green-600" fill="currentColor" viewBox="0 0 20 20">
                 <path
                   fillRule="evenodd"
                   d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
@@ -123,20 +124,19 @@ export const ApplyModal: React.FC<ApplyModalProps> = ({ phone, isOpen, onClose }
               </svg>
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Application Submitted!</h3>
-            <p className="text-gray-600">We'll contact you shortly.</p>
+            <p className="text-gray-600 text-center">We'll contact you shortly.</p>
           </div>
         )}
 
         {/* Animations */}
         <style>
           {`
-            .animate-success {
-              opacity: 0;
-              transform: scale(0.9);
-              animation: success 0.5s forwards;
+            .animate-success-overlay {
+              animation: successOverlay 0.5s forwards;
             }
-            @keyframes success {
-              to { opacity: 1; transform: scale(1); }
+            @keyframes successOverlay {
+              0% { opacity: 0; transform: scale(0.9); }
+              100% { opacity: 1; transform: scale(1); }
             }
           `}
         </style>
