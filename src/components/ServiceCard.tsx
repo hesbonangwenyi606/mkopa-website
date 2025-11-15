@@ -1,61 +1,78 @@
 import React from 'react';
-import { ServiceCard } from './ServiceCard';
-import { FaMobileAlt, FaSimCard, FaMoneyCheckAlt } from 'react-icons/fa';
 
-interface Service {
+interface ServiceCardProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   features: string[];
+  onClick: () => void;
+  animationDelay?: number;
 }
 
-const services: Service[] = [
-  {
-    icon: <FaMobileAlt className="w-6 h-6 text-white" />,
-    title: 'Phone Sales',
-    description: 'Affordable smartphones with flexible payment plans.',
-    features: ['Flexible weekly payments', 'Warranty included', 'Latest models'],
-  },
-  {
-    icon: <FaSimCard className="w-6 h-6 text-white" />,
-    title: 'SIM & Network Services',
-    description: 'Get your SIM card and activate services quickly.',
-    features: ['M-PESA setup', 'Network activation', 'SIM replacement'],
-  },
-  {
-    icon: <FaMoneyCheckAlt className="w-6 h-6 text-white" />,
-    title: 'Financial Services',
-    description: 'Seamless integration with mobile money solutions.',
-    features: ['M-PESA integration', 'Easy repayments', 'Secure transactions'],
-  },
-];
-
-export const ServicesSection: React.FC = () => {
+export const ServiceCard: React.FC<ServiceCardProps> = ({
+  icon,
+  title,
+  description,
+  features,
+  onClick,
+  animationDelay = 0,
+}) => {
   return (
-    <section id="services" className="py-24 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">Our Services</h2>
-        <p className="text-gray-600 text-lg">
-          We provide end-to-end mobile solutions tailored for your needs.
-        </p>
+    <div
+      className="bg-white rounded-xl shadow-lg p-6 border-t-4 border-green-500 transform transition-all duration-300 hover:-translate-y-2 hover:scale-105 hover:shadow-2xl animate-fade-in-up"
+      style={{ animationDelay: `${animationDelay}s` }}
+    >
+      {/* Icon */}
+      <div className="flex items-center justify-center w-16 h-16 rounded-full mb-6 bg-gradient-to-br from-green-500 to-green-600 animate-float-slow">
+        {icon}
       </div>
 
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {services.map((service, index) => (
-          <ServiceCard
-            key={service.title}
-            icon={service.icon}
-            title={service.title}
-            description={service.description}
-            features={service.features}
-            onClick={() => alert(`Learn more about ${service.title}`)}
-            gradientFrom="green-500"
-            gradientTo="green-600"
-            borderColor="green-500"
-            animationDelay={index * 0.3} // Stagger fade-in
-          />
+      {/* Title & Description */}
+      <h3 className="text-2xl font-bold text-gray-900 mb-3">{title}</h3>
+      <p className="text-gray-600 mb-6">{description}</p>
+
+      {/* Features */}
+      <ul className="space-y-2 mb-6">
+        {features.map((feature) => (
+          <li key={feature} className="flex items-start">
+            <span className="mr-2 text-green-500 mt-0.5">✔️</span>
+            <span className="text-gray-700">{feature}</span>
+          </li>
         ))}
-      </div>
-    </section>
+      </ul>
+
+      {/* Action Button */}
+      <button
+        onClick={onClick}
+        className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-blue-600 transition-all duration-300 animate-float-slow"
+      >
+        Learn More
+      </button>
+
+      {/* Animations */}
+      <style>
+        {`
+          .animate-fade-in-up {
+            opacity: 0;
+            animation: fadeInUp 1s forwards;
+          }
+
+          @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+
+          .animate-float-slow {
+            animation: floatY 6s ease-in-out infinite alternate;
+          }
+
+          @keyframes floatY {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+          }
+        `}
+      </style>
+    </div>
   );
 };
